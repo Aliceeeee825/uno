@@ -31,10 +31,22 @@ button{
   font-size: 2rem;
 }
 
-.startButton{
+.startScreen{
+  font-size: 1.2rem;
+}
+
+.startScreen form{
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  width: 30%;
   position: absolute;
-  top: 50%;
-  left: 45%;
+  top: 40%;
+  left: 35%;
+}
+
+.startButton{
+  margin-top: 2rem;
 }
 
 .onDesk{
@@ -81,4 +93,24 @@ button{
 .card.activeCard{
   top: -25px;
   position: relative;
+}
+
+.colorPicker{
+  position: absolute;
+  right: 110px;
+  bottom:260px;
+  text-align: center;
+  display: none;
+}
+
+.colorPicker.visible{
+  display: inline-block;
+}
+
+.colorPicker p{
+  font-size: 1rem;
+}
+
+.circle-picker{
+  justify-content: center;
 }

@@ -12,6 +12,7 @@
     "react-redux": "^7.2.0",
     "react-scripts": "3.4.1",
     "redux": "^4.0.5",
+    "sweetalert2": "^9.10.12",
     "uno-engine": "^1.1.0"
   },
   "scripts": {

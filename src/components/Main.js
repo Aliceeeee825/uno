@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
+import { CirclePicker } from 'react-color'
 
 import { initCard,playCard, drawCard } from '../actions/playerAction'
 
@@ -53,6 +54,7 @@ class Main extends Component{
         this.props.playCard(0, cardsToPlay)
     }
 
+
     render(){
         let addedItems = this.props.currentCards.map((card, index) => {
             return (
@@ -66,7 +68,10 @@ class Main extends Component{
         return(
             <div className='mainContent'>
                 <div className="cardOnDesk">
-                    
+                    {/* <div className={this.props.showColorPicker ? 'colorPicker visible' : 'colorPicker'}>
+                        <p>which color do you want to go with:</p>
+                        <CirclePicker onChange={this.pickColor} colors={['#ffc857', '#2d728f', '#c52233', 'seagreen']} />
+                    </div> */}
                     <p className='card onDesk' style={{background: this.props.cardOnDesk.color}}>{
                     this.props.cardOnDesk.number}</p>
                 </div>
@@ -81,7 +86,13 @@ class Main extends Component{
                             {addedItems}
                         </div>
                     </div> : 
-                        <button className='startButton' onClick={this.startClick}>Start now</button>
+                        <div className="startScreen">
+                            <form action="">
+                                <label htmlFor="">For how many people?</label>
+                                <input type="number"/>
+                                <button className='startButton' onClick={this.startClick}>Start now</button>
+                            </form>
+                        </div>
                     }
             </div>
         )
@@ -95,7 +106,8 @@ const mapStateToProps = (state) => {
         currentAllCards: state.currentAllCards,
         cardOnDesk: state.cardOnDesk,
         currentCards: state.currentCards,
-        colorChosen: state.colorChosen
+        colorChosen: state.colorChosen,
+        showColorPicker: state.showColorPicker
     }
 }
 
