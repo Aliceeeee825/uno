@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import { connect } from 'react-redux'
 import { CirclePicker } from 'react-color'
 
-import { initCard,playCard, drawCard } from '../actions/playerAction'
+import { initCard, playCard, drawCard, setPlayer, takeTurn} from '../actions/playerAction'
 
 class Main extends Component{
     constructor(){
@@ -10,18 +10,27 @@ class Main extends Component{
 
         this.state = {
             active: [],
-            addedItems: []
+            addedItems: [],
+            numOfPlayer: 1
         }
     }
 
+    handleNumberChange = (e) =>{
+        this.setState({
+            numOfPlayer: Number(e.target.value)
+        })
+    }
+
     startClick = () => {
-        this.props.initCard(0)
+        const currentPlayer = this.props.currentPlayer
+        this.props.setPlayer(this.state.numOfPlayer)
+        this.props.initCard(currentPlayer)
     }
 
     componentDidUpdate(prevProps) {
         if (this.props !== prevProps){
             let active = []
-            for (let i = 0; i < this.props.currentAllCards[0].length; i++) {
+            for (let i = 0; i < this.props.currentAllCards[this.props.currentPlayer].length; i++) {
                 active.push(false)
             }
             this.setState({
@@ -40,7 +49,7 @@ class Main extends Component{
     }
 
     pass = () => {
-        this.props.drawCard(0, 1)
+        this.props.drawCard(this.props.currentPlayer, 1)
     }
 
     play = () => {
@@ -51,18 +60,24 @@ class Main extends Component{
                 cardsToPlay.push(this.props.currentCards[i])
             }
         }
-        this.props.playCard(0, cardsToPlay)
+        this.props.playCard(this.props.currentPlayer, cardsToPlay)
+        this.props.takeTurn(this.props.currentPlayer)
     }
 
 
     render(){
-        let addedItems = this.props.currentCards.map((card, index) => {
-            return (
-            <button className={this.state.active[index] ? 'card activeCard' : 'card'} key={index} style={{background: card.color}} onClick={this.clickCard} value={card.number} cardcolor={card.color} listid = {index}>
-                {card.number}
-            </button>
-            )
-        })
+        let addedItems = []
+        if (this.
+            props.currentAllCards.length){
+            addedItems = this.props.currentAllCards[this.props.currentPlayer].map((card, index) => {
+                return (
+                <button className={this.state.active[index] ? 'card activeCard' : 'card'} key={index} style={{background: card.color}} onClick={this.clickCard} value={card.number} cardcolor={card.color} listid = {index}>
+                    {card.number}
+                </button>
+                )
+            })
+        }
+
 
 
         return(
@@ -89,7 +104,7 @@ class Main extends Component{
                         <div className="startScreen">
                             <form action="">
                                 <label htmlFor="">For how many people?</label>
-                                <input type="number"/>
+                                <input type="number" min='1' max='3' value={this.state.numOfPlayer} onChange={this.handleNumberChange}/>
                                 <button className='startButton' onClick={this.startClick}>Start now</button>
                             </form>
                         </div>
@@ -113,9 +128,11 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        setPlayer: (numOfPlayer) => {dispatch(setPlayer(numOfPlayer))},
         initCard: (id) => { dispatch(initCard(id)) },
         playCard: (id, card) => {dispatch(playCard(id,card))},
-        drawCard: (id, num) => {dispatch(drawCard(id, num))}
+        drawCard: (id, num) => {dispatch(drawCard(id, num))},
+        takeTurn: (id) => {dispatch(takeTurn(id))}
     }
 }
 

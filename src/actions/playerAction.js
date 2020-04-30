@@ -1,3 +1,10 @@
+export const setPlayer = (num) =>{
+    return{
+        type: 'SET_PLAYER',
+        num: num
+    }
+}
+
 export const initCard = (id) => {
     return {
         type: 'INIT_CARD',
@@ -17,6 +24,13 @@ export const drawCard = (id, numbOfCard) =>{
     return {
         type: 'DRAW_CARD',
         numbOfCard: numbOfCard,
+        id
+    }
+}
+
+export const takeTurn = (id) => {
+    return {
+        type: 'TAKE_TURN',
         id
     }
 }

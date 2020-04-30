@@ -4,7 +4,7 @@ import winningCat from '../assets/winningCat.jpg'
 
 const initState = {
     currentPlayer: 0,
-    numOfPlayer: 2,
+    numOfPlayer: 1,
     currentAllCards: [],
     cardOnDesk: {},
     currentCards: [],
@@ -14,12 +14,22 @@ const initState = {
 
 const cardReducer = (state = initState, action) => {
     switch (action.type){
+        case 'SET_PLAYER':
+            return{
+                ...state,
+                numOfPlayer: action.num
+            }
+
         case 'INIT_CARD':
-            let cards = randomGenerator(7)
+            let allCards = []
+            for (let i = 0; i < state.numOfPlayer; i++){
+                const cards = randomGenerator(7)
+                allCards.push(cards)
+            }
             return {
                 ...state,
-                currentAllCards: [...state.currentAllCards, cards],
-                currentCards: cards
+                currentAllCards: allCards,
+                currentCards: allCards[state.currentPlayer]
             }
         case 'DRAW_CARD':
             let newCards = randomGenerator(action.numbOfCard) 
@@ -48,22 +58,6 @@ const cardReducer = (state = initState, action) => {
                         currentAllCards: currentAllCards
                     }
                 }
-                // if (action.card.length > 1) {
-                //     const color = action.card[0].color 
-                //     const number = action.card[0].number
-                //     let flag = false
-                //     for (let i = 1; i < action.card.length; i++){
-                //         if (action.card[i].number === number){
-                //             flag = true
-                //         }
-                //     }
-                //     if (flag){
-                //         return {
-                //             ...state,
-                //             showColorPicker:true
-                //         }
-                //     }
-                // }
             }
             else if (state.currentCards.length === 1 && (action.card[0].number === state.cardOnDesk.number || action.card[0].color === state.cardOnDesk.color)){
                 // Swal.fire({
@@ -104,6 +98,13 @@ const cardReducer = (state = initState, action) => {
                         currentAllCards: currentAllCards
                     }
                 }
+            }
+        case 'TAKE_TURN':
+            console.log('take turn', action)
+            const currentId = state.currentPlayer + 1
+            return{
+                ...state,
+                currentPlayer: currentId
             }
     }
     return state
